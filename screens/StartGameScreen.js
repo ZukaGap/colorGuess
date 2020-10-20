@@ -1,72 +1,38 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
-import randomColor from '../function/randomColor'
+import React from 'react';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
-const color = randomColor();
-
-const data = [
-    {
-        color,
-        id: 1
-    },
-    {
-        color: randomColor(),
-        id: 2
-    },
-    {
-        color: randomColor(),
-        id: 3
-    },
-    {
-        color: randomColor(),
-        id: 4
-    },
-]
-
-const StartGameScreen = () => {
-    const [randomColor,setRandomColor] = useState(data);
-
-    const items = data.map(curItem => {
-        return (
-            <TouchableOpacity key={curItem.id} style={[styles.buttonStyle,{backgroundColor: curItem.color}]}>
-                <Text>{curItem.id}</Text>
-            </TouchableOpacity>
-        )
-    });
-
+const StartGameScreen = (props) => {
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>{color}</Text>
-        <View style={styles.choose}>
-        {items}
-        </View>
+        <TouchableHighlight onPress={() => props.onClick("startGame")} style={styles.button} >
+            <Text>Start Game</Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => props.onClick("option")} style={styles.button}>
+            <Text>Option</Text>
+        </TouchableHighlight>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      padding: 10,
-      margin: 10,
-  },
-  buttonStyle: {     
-      width: "35%",
-      height: 100,
-      borderRadius: 5,
-      backgroundColor: 'red',
-      marginVertical: 10,
-      marginHorizontal: 10
-  },
-  choose: {
-      margin: 0,
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "center",
-  },
-  text: {   
-      flex:1,      
-  }
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    button: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 6,
+        shadowOpacity: 0.26,
+        elevation: 8,
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        margin: 10,
+        borderRadius: 10,
+    }
 }); 
 
 export default StartGameScreen;

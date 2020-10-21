@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Guess Color",
-    "slug": "Guess Color",
+    "slug": "Color",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
-const StartGameScreen = (props) => {
+export default function StartGameScreen({onClick}){
   return (
     <View style={styles.container}>
-        <TouchableHighlight onPress={() => props.onClick("startGame")} style={styles.button} >
-            <Text>Start Game</Text>
+        <TouchableHighlight onPress={() => onClick("startGame")} style={styles.button} >
+            <Text style={styles.text} >Start Game</Text>
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => props.onClick("option")} style={styles.button}>
-            <Text>Option</Text>
+        <TouchableHighlight onPress={() => onClick("option")} style={styles.button}>
+            <Text style={styles.text} >Option</Text>
         </TouchableHighlight>
     </View>
   );
@@ -32,7 +32,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         margin: 10,
         borderRadius: 10,
+    },
+    text: {
+        color: '#87b5ff',
+        fontSize: 18
     }
 }); 
-
-export default StartGameScreen;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, TouchableHighlight, Text, View, AsyncStorage } from 'react-native';
+import { StyleSheet, TouchableHighlight, Text, View } from 'react-native';
 import Header from '../components/Header'
 import AppSwitch from '../components/AppSwitch/index'
 
 import { retrieveData, storeData } from '../function/localStorage'
 
-export default function Options(props) {
+export default function Options({onClick}) {
     const [difficulty, setDifficulty] = useState();
     const [isEasy, setIsEasy] = useState();
     const [pos, setPos] = useState();
@@ -36,7 +36,7 @@ export default function Options(props) {
         <>
             <Header title="Options" />
             <TouchableHighlight style={styles.backButton}>
-                <Text style={styles.backButtonText} onPress={() => props.onClick('')}>Back</Text>
+                <Text style={styles.backButtonText} onPress={() => onClick('')}>Back</Text>
             </TouchableHighlight>
             <View style={styles.body}>
                 <AppSwitch value={pos} onChange={() => changeOption()} label1='Easy' label2='Hard' />

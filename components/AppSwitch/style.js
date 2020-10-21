@@ -11,7 +11,8 @@ export default StyleSheet.create({
 
     },
     textStyle: {
-        fontSize:20
+        fontSize:20,
+        color: '#87b5ff',
     },
     switchStyle: {
 

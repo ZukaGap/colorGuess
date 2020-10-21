@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     text: {   
-        color: 'black',
-        fontSize: 22,
+        color: '#87b5ff',
+        fontSize: 20
     },
     result: {
         fontSize: 18,

@@ -11,10 +11,10 @@ export default function App() {
     setpage(page);
   }
 
-  const PageRoute = (props) => {
-    if(page === 'option') return (<Options onClick={e => props.onClick(e)} />)
-    else if(page === 'startGame') return (<GameScreen onClick={e => props.onClick(e)} />)
-    else return (<StartGameScreen onClick={e => props.onClick(e)} />) 
+  const PageRoute = ({onClick}) => {
+    if(page === 'option') return (<Options onClick={e => onClick(e)} />)
+    else if(page === 'startGame') return (<GameScreen onClick={e => onClick(e)} />)
+    else return (<StartGameScreen onClick={e => onClick(e)} />) 
   }
 
   return (
@@ -29,5 +29,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   }
 }); 

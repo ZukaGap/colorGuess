@@ -1,35 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, TouchableHighlight } from 'react-native';
-import randomArray from '../function/randomColor'
+import randomArray, {convertHexToRGB} from '../function/randomColor'
 import Card from '../components/Card'
 import Header from '../components/Header'
+
+import { retrieveData } from '../function/localStorage'
 
 const GameScreen = (props) => {
     const [result, setResult] = useState();
     const [dataBuffer, setDataBuffer] = useState(randomArray());
-    const [difficulty, setDifficulty] = useState('easy');
+    const [difficulty, setDifficulty] = useState();
 
-    const checkAnswer = (value) => {
-        if(value === dataBuffer.correct) {
-            setResult("Correct");
-        } else {
-            setResult("Wrong");
-        }
-    }
-    
-    const items = dataBuffer.array.map(curItem => {
-        if(curItem.id !== 0)
-            return (
-                <TouchableOpacity key={curItem.id}
-                                onPress= {() => checkAnswer(curItem.color)} 
-                                style={[styles.buttonStyle,{backgroundColor: curItem.color}]}
-                />
-            )
-    });
-
-
-    useEffect(() => {
-        _retrieveData();
+    useEffect(() => { 
         if(!result){
             setDataBuffer(randomArray());
         } else {
@@ -40,29 +22,30 @@ const GameScreen = (props) => {
         }
     },[result]);
 
-    _retrieveData = async () => {
-        try {
-        const value = await AsyncStorage.getItem('difficulty');
-        if (value !== null) {
-            setDifficulty(value);
-        }
-        } catch (error) {
-        // Error retrieving data
-            console.log(error);
-        }
-    };
-
-    _storeData = async () => {
-        let difficulty = 'easy';
-        try {
-        await AsyncStorage.setItem(
-            'difficulty', difficulty
-        );
-        } catch (error) {
-        // Error saving data
+    useEffect(() => {
+        retrieveData('difficulty')
+        .then(promise => {
+            setDifficulty(promise);
+        })
+        .catch(error => {
             console.error(error);
+        }) 
+        return () => {
+            dataBuffer,difficulty,result
         }
-    };
+    }, [])
+
+    const checkAnswer = (value) => value === dataBuffer.correct ? setResult("Correct") : setResult("Wrong");
+
+    const items = dataBuffer.array.map(curItem => {
+        if(curItem.id !== 0)
+            return (
+                <TouchableOpacity key={curItem.id}
+                                onPress= {() => checkAnswer(curItem.color)} 
+                                style={[styles.buttonStyle,{backgroundColor: curItem.color}]}
+                />
+            )
+    });
 
   return (
     <>  
@@ -72,8 +55,8 @@ const GameScreen = (props) => {
         </TouchableHighlight>
         <View style={styles.container}>
             <Text style={[styles.result, {color: result === 'Wrong' ? 'red':'green'}]}>{result}</Text>
-            <Card style={{width: 200}}>
-                <Text style={styles.text}>{difficulty === 'easy' ? dataBuffer.correct : ''}</Text>
+            <Card>
+                <Text style={styles.text}>{difficulty === "hard" ? dataBuffer.correct : convertHexToRGB(dataBuffer.correct)}</Text>
             </Card>
             <View style={styles.choose}>
                 {items}

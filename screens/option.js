@@ -1,47 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, TouchableHighlight, Text, View, AsyncStorage } from 'react-native';
 import Header from '../components/Header'
 import AppSwitch from '../components/AppSwitch/index'
 
-
-const retrieveData = async () => {
-    try {
-    let value = await AsyncStorage.getItem('difficulty');
-    if (value !== null) {
-        return value;
-    }
-    } catch (error) {
-        console.log(error);
-    }
-};
+import { retrieveData, storeData } from '../function/localStorage'
 
 export default function Options(props) {
-    const [dificulty, setDifficulty] = useState(retrieveData());
-    const [isEasy, setIsEasy] = useState(retrieveData() === 'easy' ? true:false);
+    const [difficulty, setDifficulty] = useState();
+    const [isEasy, setIsEasy] = useState();
+    const [pos, setPos] = useState();
 
-    const _storeData = async () => {
-        let diff = dificulty === 'easy' ? 'easy':'hard';
-        let diffBoolean = dificulty === 'easy' ? true:false;
-        setIsEasy(diffBoolean);
-        try {
-        await AsyncStorage.setItem(
-            'difficulty', diff
-        );
-        } catch (error) {
-        // Error saving data
-            console.error(error);
-        }
-    };
-
-    const changeOption = (value) => {
-        if(value === 'hard') {
-            setDifficulty('easy');
-            setIsEasy(true);
-        } else if(value === 'easy') {
+    const changeOption = () => {
+        if(isEasy) {
             setDifficulty('hard');
+            setIsEasy(true);
+            setPos(e => !e);
+        } else if(!isEasy) {
+            setDifficulty('easy');
             setIsEasy(false);
-        }
+            setPos(e => !e);
+        } 
     }
+
+    useEffect(() => {
+        retrieveData('difficulty')
+        .then(promise => {
+            let diff = promise === 'easy' ? true:false;
+            setDifficulty(promise);
+            setIsEasy(diff);
+            setPos(!diff);
+        });        
+    }, [])
 
     return(
         <>
@@ -50,11 +39,10 @@ export default function Options(props) {
                 <Text style={styles.backButtonText} onPress={() => props.onClick('')}>Back</Text>
             </TouchableHighlight>
             <View style={styles.body}>
-                <AppSwitch value={isEasy} onChange={() => changeOption('easy')} label='Easy' />
-                <AppSwitch value={!isEasy} onChange={() => changeOption('hard')} label='Hard' />
+                <AppSwitch value={pos} onChange={() => changeOption()} label1='Easy' label2='Hard' />
             </View>
             <TouchableHighlight style={styles.button}>
-                <Text style={styles.buttonText} onPress={() => _storeData()}>Apply</Text>
+                <Text style={styles.buttonText} onPress={() => storeData('difficulty', difficulty)}>Apply</Text>
             </TouchableHighlight>
         </>
     )

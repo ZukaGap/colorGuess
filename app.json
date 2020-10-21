@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nativeL1",
-    "slug": "nativeL1",
+    "name": "Guess Color",
+    "slug": "Guess Color",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,7 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "package": "com.zukagap.nativeL1"
+      "package": "com.zukagap.GuessColor"
     }
   }
 }
